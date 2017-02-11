@@ -30,8 +30,8 @@
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
     <!--<dependency>-->
-      <!--<groupId>org.springframework.boot</groupId>-->
-      <!--<artifactId>spring-boot-starter-hateoas</artifactId>-->
+    <!--<groupId>org.springframework.boot</groupId>-->
+    <!--<artifactId>spring-boot-starter-hateoas</artifactId>-->
     <!--</dependency>-->
     <dependency>
       <groupId>com.typesafe.akka</groupId>
@@ -51,6 +51,24 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>0.4.13</version>
+        <configuration>
+          <imageName>localhost:5000/bakka</imageName>
+          <baseImage>java</baseImage>
+          <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+          <!-- copy the service's jar file from target into the root directory of the image -->
+          <resources>
+            <resource>
+              <targetPath>/</targetPath>
+              <directory>${project.build.directory}</directory>
+              <include>${project.build.finalName}.jar</include>
+            </resource>
+          </resources>
+        </configuration>
       </plugin>
     </plugins>
   </build>
